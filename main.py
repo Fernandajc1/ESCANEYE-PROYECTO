@@ -477,7 +477,7 @@ def capturar_imagen_verificacion(ventana_actual):
                 fotos_almacenadas = pickle.loads(usuario['datos_oculares'])  # Deserializamos las imágenes almacenadas
                 for ojo_guardado in fotos_almacenadas:
                     similitud = comparar_imagenes(ojo_actual, ojo_guardado)
-                    if similitud >= 0.50:  # Umbral de similitud
+                    if similitud >= 0.50:  # Umbral de similitudes
                         cap.release()
                         cv2.destroyAllWindows()
                         ventana_actual.destroy()
