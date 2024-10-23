@@ -132,24 +132,20 @@ def mostrar_menu():
         print(f"Error al cargar el icono: {e}")
     
     # DEFINIMOS UNA IMAGEN COMO FONDO
-
     imagen_fondo = Image.open("imagenes/fondo.png")
     imagen_fondo = imagen_fondo.resize((960, 600), Image.LANCZOS)  #AJUSTAMOS EL TAMAÑO DE LA INTERFAZ
     fondo = ImageTk.PhotoImage(imagen_fondo)
 
     # IMPLEMENTAMOS LA IMAGEN PARA CREAR UN LABEL EN EL QUE SE MOSTRARA LA IMAGEN
-
     label_fondo = Label(menu, image=fondo)
     label_fondo.place(x=0, y=0, relwidth=1, relheight=1)  # EXPANDE LA IMAGEN
     label_fondo.image = fondo  # EVITA QUE PYTHON PIERDA LA IMAGEN
 
     # COLOCAMOS LOS WIDGETS EN EL FONDO
-
     label = Label(menu, text="SCANEYE TE DA LA BIENVENIDA \n Elige la opción que desees", font=("Technovier Bold", 26), bg='#342d5a', fg='white')
     label.pack(pady=15)
 
     # CARGAMOS LAS IAMGENES PARA LUEGO IMPLEMENTARLAS EN EL BOTON
-
     imagen_ojo = Image.open("imagenes/scane.png")
     imagen_ojo = imagen_ojo.resize((410, 400), Image.LANCZOS)
     icono_ojo = ImageTk.PhotoImage(imagen_ojo)
@@ -160,7 +156,6 @@ def mostrar_menu():
 
     # CREAMOS COMO FUNCIONARAN LOS BOTONES EN EL MENU, UBICANDOLOS, AGREGANDO LA IMAGEN Y UN TAMAÑO AL BOTON
     # TAMBIEN A QUE INTERFAZ TE REDIGIRA CADA BOTON
-
     boton_registrar = Button(menu, image=icono_ojo, compound="top", width=410, height=400, command=lambda: [menu.withdraw(), registrar_retina()],
                          bg='#5d3b94', borderwidth=0, highlightthickness=0)
     boton_registrar.image = icono_ojo
@@ -243,7 +238,7 @@ def registrar_retina():
     ventana_registro.protocol("WM_DELETE_WINDOW", lambda: [ventana_registro.destroy(), mostrar_menu()])
     ventana_registro.mainloop()
 
-# Definimos las acciones que realizara antes de verificar_retina() antes de invocarlo
+# DEFINIMOS LAS ACCIONES QUE REALIZARA verificar_retina() ANTES DE INVOCARLO
 def verificar_retina():
     ventana_verificar = Toplevel()
     ventana_verificar.title("Verificación de Retina Automática")
@@ -254,123 +249,172 @@ def verificar_retina():
     except Exception as e:
         print(f"Error al cargar el icono: {e}")
 
-    # Cargar la imagen de fondo
+    # CARGA UNA IMAGEN DE FONDO
     imagen_fondo = Image.open("imagenes/fondo.png")
-    imagen_fondo = imagen_fondo.resize((960, 600), Image.LANCZOS)  # Ajusta el tamaño al de la ventana
+    imagen_fondo = imagen_fondo.resize((960, 600), Image.LANCZOS)  # AJUSTAMOS EL TAMAÑO
     fondo = ImageTk.PhotoImage(imagen_fondo)
 
-    # Crear un Label para la imagen de fondo
+    # CREAMOS NUEVAMENTE EL LABEL PARA LA IMAGEN
     label_fondo = Label(ventana_verificar, image=fondo)
-    label_fondo.place(x=0, y=0, relwidth=1, relheight=1)  # Expande la imagen para cubrir toda la ventana
-    label_fondo.image = fondo  # Para evitar que Python elimine la imagen de la memoria
+    label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
+    label_fondo.image = fondo 
 
+    #CREAMOS UN LABEL PARA INSTRUIR AL USUARIO 
     label_instrucciones = Label(ventana_verificar, text="Mira a la cámara para comenzar la verificación automática", font=("Times New Roman", 27), bg='#342d5a', fg='white')
     label_instrucciones.pack(pady=20)
 
-    # Función para capturar imagen y realizar la verificación
+    # CREAMOS LA FUNCIÓN PARA CAPTURAR Y VERIFICAR LA IMAGEN
     def realizar_verificacion():
+
+        # OBTENEMOS TODOS LOS DATOS ALMACENADOS EN LA BASE DE DATOS
         usuarios = db.obtener_todos_los_datos_oculares()
+
+        # SI NO HAY NINGUN USUARIO REGISTRADO MOSTRARA UN MENSAJE
         if not usuarios:
             messagebox.showerror("Error", "No se encontraron usuarios registrados.")
             ventana_verificar.destroy()
-            mostrar_menu()
+            mostrar_menu() #AL VER QUE NO HAY USUARIOS TE REDIRIGE AL MENU
             return
-
+        
+        # CONFIGURAMOS A LA CAMARA DE CAMO STUDIO
         cap = cv2.VideoCapture(1)
         if not cap.isOpened():
+
+            # SI NO PUEDE ABRIR LA CAMARA TE MOSTRARA UN ERROR
             messagebox.showerror("Error", "Hubo un error al abrir la cámara.")
             return
-
+        
+        # INFORMA AL USURIO UE EMPIEZA YA LA VERIFICACION PARA QUE ESTE PREPARADO!
         messagebox.showinfo("Verificación", "Verificando en tiempo real. Mira a la cámara.")
-        inicio_tiempo = time.time()
+        inicio_tiempo = time.time() # GUARDA EL TIEMPO EN QUE SE INICIA LA VERIFICACIÓN
 
+        # INICIAMOS UN BUCLE PARA CAPTURAR CUADROS DEL OJO EN TIEMPO REAL
         while True:
-            ret, frame = cap.read()
+            ret, frame = cap.read() # CAPTURA UN CUADRO DE LA CAMARA
             if not ret:
+
+                # SI NO ENCUENTRA UN CUADRO, MOSTRARA UN MENSAJE DE ERROR
                 messagebox.showerror("Error", "No se pudo capturar el cuadro.")
                 break
 
+            # EMPEZAMOS LA FUNCIÓN DE DETECTAR EL OJO EN EL CUADRO
             ojo_actual = detectar_ojo(frame)
             if ojo_actual is not None:
+
+                # COMPARA LOS OJOS CAPTURADOS CON LOS DEMAS DE CADA USUARIO
                 for usuario in usuarios:
                     fotos_almacenadas = usuario['datos_oculares']
                     for ojo_guardado in fotos_almacenadas:
+
+                        # COMPARA TODAS LAS IMAGENES DE LOS OJOS, BUSCANDO LAS SIMILITUDES ENTRE USUARIOS
                         similitud = comparar_imagenes(ojo_actual, ojo_guardado)
-                        if similitud >= 0.85:  # Umbral de similitud
+                        if similitud >= 0.85:  # CREAMOS UN UMBRAL DE SIMILITUD, ENTRE 0.05 A 0.50 DEJA ACCEDER A CUALQUIERA, PERO ENTRE 0.85 A 0.90 ES MAS ESTRICTO EN LA COMPARACIÓN
                             cap.release()
-                            cv2.destroyAllWindows()
+                            cv2.destroyAllWindows() 
                             ventana_verificar.destroy()
+                            
+                            # MOSTRAMOS UN MENSAJE DE BIENVENIDA AL USUARIO
                             mensaje_bienvenida(usuario['nombre'], usuario['ocupacion'])
                             return
-            if time.time() - inicio_tiempo > 20:  # Límite de tiempo de 20 segundos
+            
+            # SI PASA MAS DE 20 SEGUNDOS EL PORCESO DE VERIFICACIÓN TERMINA
+            if time.time() - inicio_tiempo > 20:  # DEFINIMOS UN TIEMPO DE 20 SEGUNDOS
                 cap.release()
                 cv2.destroyAllWindows()
                 ventana_verificar.destroy()
-                messagebox.showwarning("Verificación", "No hubo coincidencias con los datos registrados.")
-                mostrar_menu()
-                return
 
+                # MOSTRAMOS UN MENSAJE DE ADVERTENCIA DE NO HUBO COINCIDENCIAS
+                messagebox.showwarning("Verificación", "No hubo coincidencias con los datos registrados.")
+                mostrar_menu() # Y TE VOLVERA AL MENU PRINCIPAL
+                return
+            
+            # MUESTRA EL VIDEO DE LA CAMAR EN TIEMPO REAL
             cv2.imshow("Verificación en Tiempo Real", frame)
             cv2.waitKey(1)
 
+    # INICIA LA VERIFICACION CUANDO SE ABRA LA VENTANA 
     realizar_verificacion()
 
+    # SI EL USUARIO DECIDE SALIR DE LA VENTANA DE VERIFICACION, TE REGRESARA AL MENU
     ventana_verificar.protocol("WM_DELETE_WINDOW", lambda: [ventana_verificar.destroy(), mostrar_menu()])
-    ventana_verificar.mainloop()
+    ventana_verificar.mainloop() # MANTENEMOS LA VENTANA ABIERTA
 
-# Definimos las funciones de captura y verificación de imágenes
+# CREAMOS LA FUNCION PARA DETECTAR EL OJO
 def detectar_ojo(frame):
+
+    # CONVERTIMOS LA IMAGEN CAPTURADA A ESCALA DE GRISES, LO CUAL FACILITARA LA VERIFICACION
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # CARGAMOS UN CLASIFICADOR HaarsCascade PREENTRENADO, PARA DETECTAR ZONAS ESPECIFICAS DEL OJO
     eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+
+    # DETECTAMOS TODAS LAS REGIONES DEL OJO DE CADA IMAGEN
     ojos = eye_cascade.detectMultiScale(gray, 1.3, 5)
 
+    # SI DETECTA UN OJO, CORTAMOS LA IMAGEN PARA QUE SOLAMENTE SE VEA EL OJO
     for (x, y, w, h) in ojos:
         ojo = frame[y:y+h, x:x+w]
-        return cv2.resize(ojo, (100, 100))  # Redimensionamos para normalizar el tamaño
+        return cv2.resize(ojo, (100, 100))  # REDIMENCIONAMOS EL TAMAÑO DE LA IMAGEN QUE TENDRA EL OJO
+    
+    # SI NO TE DETECTA UN OJO, REGRESA UN NONE
     return None
 
+# CREAMOS LA FUNCIÓN PARA CAPTURAR LA IMAGENES DE NUEVOS USARIOS Y ENVIAR LOS REGISTROS A LA BASE DE DATOS
 def capturar_imagen(nombre_usuario, apellido_usuario, edad_usuario, ocupacion_usuario, ventana_actual):
+
+    # VALIDAMOS QUE TODOS LOS CAMPOS ESTEN LLENOS Y NO ESTEN VACIOS
     if not nombre_usuario.strip() or not apellido_usuario.strip() or not edad_usuario.strip() or not ocupacion_usuario:
         messagebox.showwarning("Entrada Vacía", "Por favor, completa todos los campos.")
         return
-
+    
+    # CREAMOS UNA VERIFICACION, EN QUE NO HAYA DATOS SIMILARES EN NOMBRE Y APELLIDO
     datos_existentes = db.obtener_datos_oculares(nombre_usuario)
     if datos_existentes:
         messagebox.showwarning("Usuario Existente", f"El usuario '{nombre_usuario}' ya está registrado.")
         return
+    
+    # INICIAMOS EL PROCESO PARA PODER ALMACENAR LAS IMAGENES
+    fotos = []   # CREAMOS UNA LISTA PARA LAS FOTOS
+    max_captures = 4   # ESTABLECEMOS CUANTAS FOTOS SE VAN A TOMAR
+    cap = cv2.VideoCapture(1)   # ABRE LA CAMARA DE CAMO STUDIO
+    cv2.namedWindow("Registro de Ojos")    # CREAMOS UNA VENTANA PARA QUE PUEDA VISUALIZAR COMO QUEDARAN LAS IMAGENES
+    cv2.resizeWindow("Registro de Ojos", 50, 50)  # LE DAMOS UN TAMAÑO PEQUEÑO A LA VENTANA
 
-    fotos = []
-    max_captures = 4
-    cap = cv2.VideoCapture(1)
-    cv2.namedWindow("Registro de Ojos")
-    cv2.resizeWindow("Registro de Ojos", 50, 50)
-
+    # SE VERIFICA SI HAY ACCESO O NO A LA CAMARA
     if not cap.isOpened():
         messagebox.showerror("Error", "Hubo un error al abrir la cámara.")
         return
-
+    
+    # GENERAMOS UNA NOTIFICACIÓN PARA QUE EL USUARIO ESTE PREPARADO
     messagebox.showinfo("Captura", "Capturando imágenes de tu ojo. Por favor, asegúrate de estar cerca de la cámara.")
-    captured_encodings = 0
+    captured_encodings = 0   # SE CREA UN CONTADOR DE IMAGENES
 
+    # GENERAMOS UN CICLO DE CAPTURA DE IMAGENES, HASTA ACABAR LA CANTIDAD DE CAPTURAS PROPUESTAS
     while captured_encodings < max_captures:
-        ret, frame = cap.read()
+        ret, frame = cap.read() # EMPEZARA A CAPTURAR EL CUADRO DE LA CAMARA
         if not ret:
             messagebox.showerror("Error", "No se pudo capturar el cuadro.")
             break
 
+        # INTENTA DETECTAR EL OJO EN EL CUADRO CAPTURADO
         ojo = detectar_ojo(frame)
         if ojo is not None:
+
+            # CREAMOS UNA CUENTA REGRESIVA
             for i in range(5, 0, -1):
                 countdown_frame = frame.copy()
                 cv2.putText(countdown_frame, f"Capturando en {i}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv2.imshow(f"Captura de retina - {nombre_usuario}", countdown_frame)
-                cv2.waitKey(1000)
-            cv2.imshow(f"Captura de retina - {nombre_usuario}", ojo)
-            cv2.waitKey(500)
-            captured_encodings += 1
-            fotos.append(ojo)
+                cv2.waitKey(1000)   # SE ESPERA UN SEGUNDO ENTRE CADA NUMERO DE LA CUENTA REGRESIVA
+
+            cv2.imshow(f"Captura de retina - {nombre_usuario}", ojo) # MOSTRAREMOS LA IMAGEN DEL OJO, EN LA VENTANA PEQUEÑA
+            cv2.waitKey(500)  # ESPERAMOS 5 milisegundos ANTES DE CONTINUAR EL PROCESO
+            captured_encodings += 1  # AUMENTAMOS EL CONTADOR DE LAS IMAGENES CAPTURADAS, HASTA LLEGAR A LA ULTIMA FOTO ( EN ESTE CASO A LA 4)
+            fotos.append(ojo)  # AGREGAMOS LAS IMAGENES A LA LISTA
             messagebox.showinfo("Captura Exitosa", f"Imagen {captured_encodings} de {max_captures} capturada correctamente.")
         else:
+
+            # SI NO SE ENCUENTRA EL OJO, MOSTRAREMOS UNA ADVERTENCIAS
             messagebox.showwarning("No Se Detectó un Ojo", "Intenta de nuevo, asegúrate de estar en una buena posición.")
             continue
 
@@ -410,8 +454,8 @@ def capturar_imagen_verificacion(ventana_actual):
     
     cap = cv2.VideoCapture(1)
     
-    # Configurar la cámara si es necesario
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)  # Cambiar a 1080p si lo deseas
+    # CONFIGURAMOS LA CAMRA DE CAMO STUDIO DEPENDIENTEMENTE LA CALIDAD DEL LENTE
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)  # DE MOMENTO DEJAMOS 1080p
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     
     if not cap.isOpened():
