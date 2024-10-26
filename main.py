@@ -308,7 +308,7 @@ def verificar_retina():
 
                         # COMPARA TODAS LAS IMAGENES DE LOS OJOS, BUSCANDO LAS SIMILITUDES ENTRE USUARIOS
                         similitud = comparar_imagenes(ojo_actual, ojo_guardado)
-                        if similitud >= 0.85:  # CREAMOS UN UMBRAL DE SIMILITUD, ENTRE 0.05 A 0.50 DEJA ACCEDER A CUALQUIERA, PERO ENTRE 0.85 A 0.90 ES MAS ESTRICTO EN LA COMPARACIÓN
+                        if similitud >= 0.80:  # CREAMOS UN UMBRAL DE SIMILITUD, ENTRE 0.05 A 0.50 DEJA ACCEDER A CUALQUIERA, PERO ENTRE 0.85 A 0.90 ES MAS ESTRICTO EN LA COMPARACIÓN
                             cap.release()
                             cv2.destroyAllWindows() 
                             ventana_verificar.destroy()
@@ -477,7 +477,7 @@ def capturar_imagen_verificacion(ventana_actual):
                 fotos_almacenadas = pickle.loads(usuario['datos_oculares'])  # Deserializamos las imágenes almacenadas
                 for ojo_guardado in fotos_almacenadas:
                     similitud = comparar_imagenes(ojo_actual, ojo_guardado)
-                    if similitud >= 0.50:  # Umbral de similitudes
+                    if similitud >= 0.65:  # Umbral de similitudes
                         cap.release()
                         cv2.destroyAllWindows()
                         ventana_actual.destroy()
@@ -501,9 +501,9 @@ def mensaje_bienvenida(nombre_usuario, ocupacion_usuario):
 def abrir_area_trabajo(nombre_usuario, ocupacion_usuario):
     area = Toplevel()
     area.title(f"Área de Trabajo - {nombre_usuario}")
-    area.geometry("950x600")
+    centrar_ventana(area, 960, 600)
     
-    try:
+    try: 
         area.iconbitmap("imagenes/loss.ico")
     except Exception as e:
         print(f"Error al cargar el icono: {e}")

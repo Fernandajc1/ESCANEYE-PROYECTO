@@ -7,7 +7,7 @@ cx_Freeze.setup(
     options={
         "build_exe": {
             "packages": ["os", "tkinter", "PIL", "cv2", "numpy", "time", "mysql.connector", "skimage.metrics"],
-            "include_files": ["imagenes"]  # Ajusta según tus archivos y directorios
+            "include_files": ["imagenes"] 
         }
     },
     executables=executables
