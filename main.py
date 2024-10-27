@@ -23,34 +23,103 @@ db = BaseDatos() #ESTABLECE ANTES LA CONECCIÓN CON LA BASE DE DATOS!
 
 actividades = {
     "Analista en Sistemas": [
-        "Revisión de reportes         -7:00 am-",
-        "Análisis de requerimientos   -9:00 am-",
-        "Planificación de mejoras     -12:00 pm-",
-        "Documentación                -13:00 pm-",
-        "Monitoreo de sistemas        -18:10 pm-"
+        "Revisión de reportes               -7:00 am-",
+        "Análisis de requerimientos         -9:00 am-",
+        "Descanso                           -10:30 am-",
+        "Planificación de mejoras           -12:00 pm-",
+        "Almuerzo                           -13:00 pm-",
+        "Documentación                      -14:00 pm-",
+        "Revisión de procesos               -16:00 pm-",
+        "Monitoreo de sistemas              -18:10 pm-"
     ],
     "Diseñador": [
-        "Creación de bocetos           -7:00 am-",
-        "Diseño de interfaces          -9:30 am-",
-        "Revisión de feedback          -13:00 pm-",
-        "Colaboración con desarrollo   -14:00 pm-"
+        "Creación de bocetos                -7:00 am-",
+        "Revisión de diseños                -9:30 am-",
+        "Descanso                           -10:45 am-",
+        "Ajustes según feedback             -11:00 am-",
+        "Diseño de interfaces               -13:00 pm-",
+        "Almuerzo                           -13:30 pm-",
+        "Revisión de prototipos             -15:00 pm-",
+        "Presentación de prototipos         -16:00 pm-"
     ],
     "Desarrollador": [
-        "Desarrollo de nuevas funcionalidades   -12:20 pm-",
-        "Corrección de errores                  -14:00 pm-",
-        "Revisión de código                     -18:00 pm-",
-        "Implementación de pruebas              -19:40 pm-"
+        "Revisión de tareas asignadas       -7:00 am-",
+        "Codificación de módulos            -10:00 am-",
+        "Descanso                           -11:00 am-",
+        "Pruebas unitarias                  -12:30 pm-",
+        "Almuerzo                           -13:30 pm-",
+        "Resolución de errores              -15:00 pm-",
+        "Optimización de código             -16:30 pm-",
+        "Revisión de código                 -17:30 pm-"
     ],
     "Tester": [
-        "Pruebas de software                  -14:00 pm-",
-        "Generación de reportes de errores    -16:00 pm-",
-        "Automatización de pruebas            -17:50 pm-",
-        "Revisión de correcciones             -19:00 pm-"
+        "Revisión de casos de prueba        -8:00 am-",
+        "Pruebas funcionales               -10:30 am-",
+        "Descanso                           -11:00 am-",
+        "Reportes de errores                -12:00 pm-",
+        "Almuerzo                           -12:30 pm-",
+        "Pruebas de regresión               -14:30 pm-",
+        "Validación de correcciones         -16:30 pm-",
+        "Revisión de documentación          -17:30 pm-"
     ],
     "Encargados de limpieza": [
-        "Limpieza en la segunda planta edificio 3      -7:00 am-",
-        "Limpieza en la area de comida en anexo        -12:00 pm-",
-        "Limpieza del baño primera plan                -2:00 pm-"
+        "Limpieza de oficinas               -6:00 am-",
+        "Revisión de suministros            -9:00 am-",
+        "Descanso                           -10:30 am-",
+        "Limpieza de áreas comunes          -12:00 pm-",
+        "Almuerzo                           -13:00 pm-",
+        "Reorganización de equipo           -15:00 pm-",
+        "Limpieza final                     -17:30 pm-"
+    ],
+    "Ingeniero de Software": [
+        "Revisión de arquitecturas          -8:00 am-",
+        "Diseño de sistemas                 -9:30 am-",
+        "Descanso                           -10:45 am-",
+        "Implementación de soluciones       -11:30 am-",
+        "Revisión de testeo                 -13:00 pm-",
+        "Almuerzo                           -13:30 pm-",
+        "Optimización de código             -15:00 pm-",
+        "Análisis de resultados             -17:00 pm-"
+    ],
+    "Ingeniero DevOps": [
+        "Configuración de servidores        -7:30 am-",
+        "Automatización de procesos         -10:00 am-",
+        "Descanso                           -11:00 am-",
+        "Monitoreo de infraestructura       -13:00 pm-",
+        "Almuerzo                           -13:30 pm-",
+        "Implementación de CI/CD            -15:00 pm-",
+        "Pruebas de despliegue              -16:30 pm-",
+        "Mantenimiento de sistemas          -18:00 pm-"
+    ],
+    "Especialista en IA": [
+        "Entrenamiento de modelos           -8:00 am-",
+        "Revisión de datasets               -10:00 am-",
+        "Descanso                           -11:30 am-",
+        "Optimización de modelos            -12:00 pm-",
+        "Evaluación de precisión            -13:00 pm-",
+        "Almuerzo                           -13:30 pm-",
+        "Despliegue de modelos              -15:00 pm-",
+        "Análisis de métricas               -17:30 pm-"
+    ],
+    "Arquitecto de Soluciones": [
+        "Reuniones de requerimientos        -8:30 am-",
+        "Análisis de sistemas               -10:00 am-",
+        "Descanso                           -10:45 am-",
+        "Diseño de arquitectura             -11:30 am-",
+        "Validación de especificaciones     -14:30 pm-",
+        "Almuerzo                           -15:00 pm-",
+        "Revisión de seguridad              -16:30 pm-",
+        "Evaluación de integraciones        -17:30 pm-"
+    ],
+    "Administrador de Bases de Datos": [
+        "Monitoreo de bases                 -7:00 am-",
+        "Optimización de consultas          -9:00 am-",
+        "Descanso                           -10:30 am-",
+        "Backup y recuperación              -12:00 pm-",
+        "Almuerzo                           -13:00 pm-",
+        "Seguridad de datos                 -15:00 pm-",
+        "Actualización de sistemas          -17:00 pm-",
+        "Revisión de logs                   -18:30 pm-"
     ]
 }
 #-.-.-.--.-DEFINIMOS LOS HORARIOS DE ENTRADA Y SALIDA DE LOS USUARIOS!-.-.-.-.-.-.
@@ -60,14 +129,24 @@ horarios_entrada = {
     "Diseñador": "07:00",
     "Desarrollador": "12:00",
     "Tester": "14:00",
-    "Encargados de limpieza": "7:00"
+    "Encargados de limpieza": "07:00",
+    "Ingeniero de Software": "08:00",
+    "Ingeniero DevOps": "07:30",
+    "Especialista en IA": "08:00",
+    "Arquitecto de Soluciones": "08:30",
+    "Administrador de Bases de Datos": "07:00"
 }
 horarios_salida = {
     "Analista en Sistemas": "20:00",
     "Diseñador": "15:00",
     "Desarrollador": "21:00",
     "Tester": "20:00",
-    "Encargados de limpieza": "14:00"
+    "Encargados de limpieza": "14:00",
+    "Ingeniero de Software": "17:00",
+    "Ingeniero DevOps": "18:00",
+    "Especialista en IA": "17:30",
+    "Arquitecto de Soluciones": "16:30",
+    "Administrador de Bases de Datos": "17:00"
 }
 
 #-.--.--.CODIGO PARA HACER QUE LAS INTERFACES SE CENTREN--..-.--
@@ -214,7 +293,7 @@ def registrar_retina():
 
     #CREAMOS UN SELECCIONADOS, EN EL QUE EL USUARIO PODRA ELEGIR UE OCUPACIÓN REALIZA EN EL TRABAJO
     Label(ventana_registro, text="ELIGE TU OCUPACIÓN:", font=("Times New Roman", 15), bg='#342d5a', fg='white').pack(pady=(10, 0))
-    ocupaciones = ["Analista en Sistemas", "Diseñador", "Desarrollador", "Tester", "Servicios de Limpieza"]
+    ocupaciones = ["Analista en Sistemas", "Diseñador", "Desarrollador", "Tester", "Encargados de limpieza","Ingeniero de Software","Ingeniero DevOps","Especialista en IA","Arquitecto de Soluciones","Administrador de Bases de Datos"]
     ocupacion_seleccionada = StringVar()
     ocupacion_seleccionada.set(ocupaciones[0])
     menu_ocupacion = OptionMenu(ventana_registro, ocupacion_seleccionada, *ocupaciones)
@@ -308,7 +387,7 @@ def verificar_retina():
 
                         # COMPARA TODAS LAS IMAGENES DE LOS OJOS, BUSCANDO LAS SIMILITUDES ENTRE USUARIOS
                         similitud = comparar_imagenes(ojo_actual, ojo_guardado)
-                        if similitud >= 0.80:  # CREAMOS UN UMBRAL DE SIMILITUD, ENTRE 0.05 A 0.50 DEJA ACCEDER A CUALQUIERA, PERO ENTRE 0.85 A 0.90 ES MAS ESTRICTO EN LA COMPARACIÓN
+                        if similitud >= 0.85:  # CREAMOS UN UMBRAL DE SIMILITUD, ENTRE 0.05 A 0.50 DEJA ACCEDER A CUALQUIERA, PERO ENTRE 0.85 A 0.90 ES MAS ESTRICTO EN LA COMPARACIÓN
                             cap.release()
                             cv2.destroyAllWindows() 
                             ventana_verificar.destroy()
@@ -497,7 +576,6 @@ def capturar_imagen_verificacion(ventana_actual):
 def mensaje_bienvenida(nombre_usuario, ocupacion_usuario):
     messagebox.showinfo("Bienvenido", f"Bienvenido, {nombre_usuario}!")
     abrir_area_trabajo(nombre_usuario, ocupacion_usuario)
-
 def abrir_area_trabajo(nombre_usuario, ocupacion_usuario):
     area = Toplevel()
     area.title(f"Área de Trabajo - {nombre_usuario}")
@@ -511,13 +589,15 @@ def abrir_area_trabajo(nombre_usuario, ocupacion_usuario):
     label = Label(area, text=f"Actividades de Trabajo de {ocupacion_usuario}", font=("Technovier Bold", 20))
     label.pack(pady=20)
 
-    # Obtener hora actual para verificar la entrada
+    # Obtener la hora actual para verificar la entrada
     hora_actual = datetime.now().strftime("%H:%M")
-    hora_entrada_correcta = horarios_entrada.get(ocupacion_usuario)
-    hora_salida_correcta = horarios_salida.get(ocupacion_usuario)
+    
+    # Establecer un horario de entrada y salida por defecto si no están definidos para la ocupación
+    hora_entrada_correcta = horarios_entrada.get(ocupacion_usuario, "09:00")
+    hora_salida_correcta = horarios_salida.get(ocupacion_usuario, "18:00")
 
-    # Verificar si la persona llegó temprano, a tiempo o tarde
-    entrada_label = Label(area, text=f"Hora de Entrada: {hora_actual}")
+    # Mostrar la hora de entrada y determinar si el usuario llegó temprano, a tiempo o tarde
+    entrada_label = Label(area, text=f"Hora de Entrada: {hora_entrada_correcta}")
     entrada_label.pack()
 
     if hora_actual < hora_entrada_correcta:

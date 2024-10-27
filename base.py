@@ -16,7 +16,7 @@ class BaseDatos:
             print(f"Error conectando a la base de datos: {err}")
     
     def verificar_conexion(self):
-        """ Verifica si la conexión a la base de datos es correcta. """
+        #.-.-.-- Verifica si la conexión a la base de datos es correcta. .-.-.-.-.-
         try:
             self.cursor.execute("SELECT DATABASE();")
             resultado = self.cursor.fetchone()
@@ -30,7 +30,7 @@ class BaseDatos:
                 print("Alguno de los campos está vacío o es inválido.")
                 return
 
-            # Serializa los datos oculares antes de guardarlos
+            #.-.-.-.Serializa los datos oculares antes de guardarlos
             datos_serializados = pickle.dumps(datos_oculares)
             consulta = "INSERT INTO usuarios (nombre, apellido, edad, ocupacion, datos_oculares) VALUES (%s, %s, %s, %s, %s)"
             self.cursor.execute(consulta, (nombre, apellido, edad, ocupacion, datos_serializados))
@@ -41,7 +41,7 @@ class BaseDatos:
             print(f"Error al agregar usuario: {e}")
 
     def obtener_datos_oculares(self, nombre):
-        """ Obtiene los datos oculares de un usuario por su nombre. """
+        #.-.-.-.-.-Obtiene los datos oculares de un usuario por su nombre. """
         try:
             consulta = "SELECT datos_oculares FROM usuarios WHERE nombre = %s"
             self.cursor.execute(consulta, (nombre,))
@@ -57,9 +57,9 @@ class BaseDatos:
             print(f"Error al obtener datos oculares: {e}")
             return None
 
-    # Nueva función para obtener todos los usuarios con sus datos oculares
+    #-.-.-. función para obtener todos los usuarios con sus datos oculares -.-.-.
     def obtener_todos_los_datos_oculares(self):
-        """ Obtiene los datos oculares de todos los usuarios registrados. """
+        #-.-.-..-Obtiene los datos oculares de todos los usuarios registrados....-.-.
         try:
             consulta = "SELECT nombre, ocupacion, datos_oculares FROM usuarios"
             self.cursor.execute(consulta)
@@ -85,7 +85,7 @@ class BaseDatos:
             return []
 
     def cerrar_conexion(self):
-        """ Cierra la conexión con la base de datos. """
+        #-.-.-.Cierra la conexión con la base de datos..-.-.-.
         try:
             if self.cursor:
                 self.cursor.close()
